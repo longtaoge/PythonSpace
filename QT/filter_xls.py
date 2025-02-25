@@ -1,5 +1,6 @@
 import pandas as pd
 from datetime import datetime
+import  utils.formart as mf
 
 def filter_csv_data(input_file, output_file, condition, encoding='utf-8'):
     """
@@ -43,24 +44,39 @@ def filter_csv_data(input_file, output_file, condition, encoding='utf-8'):
 # 示例使用
 if __name__ == "__main__":
 
-  
-    # 文件配置
-    input_csv = "QT/file/test.csv"      # 输入文件路径
-    output_csv = "QT/file/test_filter.csv"   # 输出文件路径
+ 
+   # 文件配置
+    input_csv = "QT/file/Table.csv"      # 输入文件路径
+    output_csv = "QT/file/Table_filter.csv"   # 输出文件路径
+    output_csv2 = "QT/file/Table_filter2.csv"   # 输出文件路径
     file_encoding = "utf-8"     # 根据实际情况调整编码 (如 gbk, latin1 等)
+     
+    
+
+    column_names=["DDZ", "5日内", "涨幅%"]  # 处理多个列
+     
+    
+  
+    def clean_numeric_data(input_file, output_file, column_names, encoding='utf-8'):
+     pd.read_csv(input_csv, encoding=encoding)
+
+    
+ 
     
     # 自定义筛选条件函数
     def custom_condition(df):
         """示例筛选条件："""
         return (
-            (df['胜率(%)'] >= 75) &                      # 数值比较
-            (df['年化收益率(%)'] >10     )         # 多值筛选
+            (df['DDZ']   >  10) &                      # 数值比较
+            (df['5日内'] > 0 ) &        # 多值筛选
+            ( df ['涨幅%'] < 3) &
+                ( df ['涨幅%'] > -2 )
              )
     
     # 执行筛选
     success = filter_csv_data(
-        input_file=input_csv,
-        output_file=output_csv,
+        input_file=output_csv,
+        output_file=output_csv2,
         condition=custom_condition,
         encoding=file_encoding
     )
